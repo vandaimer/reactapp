@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'unistore/react';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -44,10 +43,8 @@ class PersonList extends Component {
     const { personList, classes } = this.props;
 
     return (
-      <List
-        component="nav"
-        subheader={<ListSubheader component="div">Person contacts</ListSubheader>}
-      >
+      <List component="nav">
+        <h3>Contatos</h3>
         {Boolean(personList.length) ? (
           personList.map(person => (
             <div key={person.id}>
