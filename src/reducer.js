@@ -32,9 +32,15 @@ const addNewPerson = async (state, dirtyPayload) => {
   await axios.post(url, payload);
 };
 
+const removePerson = async personId => {
+  const url = `http://localhost:3000/api/person/${personId}`;
+  await axios.delete(url);
+};
+
 const actions = store => ({
   getPersonList: state => getPersonList(state),
   addNewPerson: (state, dirtyPayload) => addNewPerson(state, dirtyPayload),
+  removePerson: (state, personId) => removePerson(personId),
 });
 
 const props = ['personList'];
