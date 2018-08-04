@@ -23,11 +23,13 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  state = {
+  initialState = {
     name: '',
     facebook: '',
     twitter: '',
   };
+
+  state = { ...this.initialState };
 
   static propTypes = {
     getPersonList: PropTypes.func.isRequired,
@@ -61,6 +63,7 @@ class App extends Component {
     event.preventDefault();
     await addNewPerson(this.state);
     await getPersonList();
+    this.setState({ ...this.initialState });
   }
 
   handleChange = name => event => {
