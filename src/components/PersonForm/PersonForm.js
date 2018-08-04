@@ -21,6 +21,7 @@ class PersonForm extends Component {
     name: '',
     facebook: '',
     twitter: '',
+    phone: '',
   };
 
   state = { ...this.initialState };
@@ -66,6 +67,14 @@ class PersonForm extends Component {
           className={classes.textField}
           value={this.state.twitter}
           onChange={this.handleChange('twitter')}
+          margin="normal"
+        />
+        <TextField
+          id="phone"
+          label="Phone"
+          className={classes.textField}
+          value={this.state.phone}
+          onChange={this.handleChange('phone')}
           margin="normal"
         />
         <Button variant="contained" className={classes.button} onClick={this.handleSubmit}>
