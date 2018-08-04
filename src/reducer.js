@@ -1,13 +1,19 @@
+import axios from 'axios';
+
 const initialState = {
-  count: 0,
+  personList: [],
 };
 
 const actions = store => ({
-  increment(state) {
-    return { count: state.count + 1 };
+  async getPersonList(state) {
+    const url = 'http://localhost:3000/api/person';
+    const { data: { items: personList } } = await axios.get(url);
+    return { personList };
   },
 });
 
-const props = [ 'count' ];
+
+const props = [ 'personList' ];
+
 
 export { initialState, props, actions };
