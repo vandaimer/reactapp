@@ -1,11 +1,20 @@
-import React, { Component } from 'react';
-import { connect } from 'unistore/react';
-import { props, actions } from '../../reducer';
-import './App.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "unistore/react";
+import { props, actions } from "../../reducer";
+import "./App.css";
 
 class App extends Component {
+  static propTypes = {
+    getPersonList: PropTypes.func.isRequired,
+    personList: PropTypes.array
+  };
 
-  componentDidMount () {
+  static defaultProps = {
+    personList: undefined
+  };
+
+  componentDidMount() {
     const { getPersonList } = this.props;
     getPersonList();
   }
@@ -13,16 +22,16 @@ class App extends Component {
   render() {
     const { personList } = this.props;
 
-    return(
+    return (
       <div>
         {personList &&
-          personList.map(person => (
-            <p key={person.id} >{person.name}</p>
-          ))
-        }
+          personList.map(person => <p key={person.id}>{person.name}</p>)}
       </div>
     );
   }
 }
 
-export default connect(props, actions)(App);
+export default connect(
+  props,
+  actions
+)(App);
