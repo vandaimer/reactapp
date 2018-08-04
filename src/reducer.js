@@ -1,15 +1,18 @@
 import axios from 'axios';
 
+const baseURL = 'http://localhost:3000/api/person';
+
 const initialState = {
   personList: [],
 };
 
 const getPersonList = async state => {
-  const url = 'http://localhost:3000/api/person';
+  const uri = baseURL;
+
   try {
     const {
       data: { items: personList },
-    } = await axios.get(url);
+    } = await axios.get(uri);
     return { personList };
   } catch (e) {
     const { personList } = state;
@@ -18,7 +21,7 @@ const getPersonList = async state => {
 };
 
 const addNewPerson = async (state, dirtyPayload) => {
-  const url = 'http://localhost:3000/api/person';
+  const uri = baseURL;
   const { name, ...rest } = dirtyPayload;
   const contacts = [];
 
@@ -29,12 +32,12 @@ const addNewPerson = async (state, dirtyPayload) => {
 
   const payload = { name, contacts };
 
-  await axios.post(url, payload);
+  await axios.post(uri, payload);
 };
 
 const removePerson = async personId => {
-  const url = `http://localhost:3000/api/person/${personId}`;
-  await axios.delete(url);
+  const uri = `${baseURL}/${personId}`;
+  await axios.delete(uri);
 };
 
 const actions = store => ({
