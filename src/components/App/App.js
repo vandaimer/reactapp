@@ -1,42 +1,66 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { compose } from "redux";
-import { connect } from "unistore/react";
-import { withStyles } from "@material-ui/core/styles";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import ExpandMore from "@material-ui/icons/ExpandMore";
-import PersonIcon from "@material-ui/icons/Person";
-import ContactMailIcon from "@material-ui/icons/ContactMail";
-import { props, actions } from "../../reducer";
-import "./App.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { compose } from 'redux';
+import { connect } from 'unistore/react';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandMore from '@material-ui/icons/ExpandMore';
+import PersonIcon from '@material-ui/icons/Person';
+import ContactMailIcon from '@material-ui/icons/ContactMail';
+import { props, actions } from '../../reducer';
+import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  state = {
+    name: '',
+    facebook: '',
+    twitter: '',
+  };
+
   static propTypes = {
     getPersonList: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    personList: PropTypes.array
+    personList: PropTypes.array,
   };
 
   static defaultProps = {
-    personList: undefined
+    personList: undefined,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { getPersonList } = this.props;
-    getPersonList();
+    await getPersonList();
   }
 
-  state = { open: false };
-
-  handleClick = contacts => {
+  handleClick(contacts) {
     if (contacts.length) {
       this.setState(state => ({ open: !state.open }));
     }
+  }
+
+  async handleSubmit(event) {
+    const { getPersonList, addNewPerson } = this.props;
+    event.preventDefault();
+    await addNewPerson(this.state);
+    await getPersonList();
+  }
+
+  handleChange = name => event => {
+    this.setState({
+      [name]: event.target.value,
+    });
   };
 
   render() {
@@ -44,35 +68,58 @@ class App extends Component {
 
     return (
       <div className={classes.root}>
+        <form className={classes.container} noValidate autoComplete="off">
+          <TextField
+            id="name"
+            label="Nome"
+            className={classes.textField}
+            value={this.state.name}
+            onChange={this.handleChange('name')}
+            margin="normal"
+          />
+          <TextField
+            id="facebook"
+            label="Facebook"
+            className={classes.textField}
+            value={this.state.facebook}
+            onChange={this.handleChange('facebook')}
+            margin="normal"
+          />
+          <TextField
+            id="twitter"
+            label="Twitter"
+            className={classes.textField}
+            value={this.state.twitter}
+            onChange={this.handleChange('twitter')}
+            margin="normal"
+          />
+          <Button variant="contained" className={classes.button} onClick={this.handleSubmit}>
+            Salvar
+          </Button>
+        </form>
         <List
           component="nav"
-          subheader={
-            <ListSubheader component="div">Person contacts</ListSubheader>
-          }
+          subheader={<ListSubheader component="div">Person contacts</ListSubheader>}
         >
           {Boolean(personList.length) ? (
             personList.map(person => (
-              <div>
-                <ListItem
-                  key={person.id}
-                  button
-                  onClick={() => this.handleClick(person.contacts)}
-                >
+              <div key={person.id}>
+                <ListItem button onClick={() => this.handleClick(person.contacts)}>
                   <ListItemIcon>
                     <PersonIcon />
                   </ListItemIcon>
                   <ListItemText inset primary={person.name} />
-                  {Boolean(person.contacts.length) ? (
-                    <ExpandMore />
-                  ) : (
-                    "Sem contatos"
-                  )}
+                  {Boolean(person.contacts.length) ? <ExpandMore /> : 'Sem contatos'}
                 </ListItem>
                 {Boolean(person.contacts.length) && (
                   <Collapse in={this.state.open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {person.contacts.map(contact => (
-                        <ListItem button className={classes.nested}>
+                        <ListItem
+                          key={`${person.id}${contact.id}`}
+                          button
+                          className={classes.nested}
+                        >
                           <ListItemIcon>
                             <ContactMailIcon />
                           </ListItemIcon>
@@ -87,7 +134,7 @@ class App extends Component {
             ))
           ) : (
             <ListItem>
-              <ListItemText inset primary={"Nenhum contato adicionado"} />
+              <ListItemText inset primary={'Nenhum contato adicionado'} />
             </ListItem>
           )}
         </List>
@@ -98,19 +145,34 @@ class App extends Component {
 
 const styles = theme => ({
   root: {
-    width: "100%",
+    width: '100%',
     maxWidth: 360,
-    backgroundColor: theme.palette.background.paper
+    backgroundColor: theme.palette.background.paper,
   },
   nested: {
-    paddingLeft: theme.spacing.unit * 4
-  }
+    paddingLeft: theme.spacing.unit * 4,
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  menu: {
+    width: 200,
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
 });
 
 export default compose(
   connect(
     props,
-    actions
+    actions,
   ),
-  withStyles(styles)
+  withStyles(styles),
 )(App);
