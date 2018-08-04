@@ -46,6 +46,7 @@ class PersonForm extends Component {
     return (
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
+          required
           id="name"
           label="Nome"
           className={classes.textField}
