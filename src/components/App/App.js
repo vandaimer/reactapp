@@ -50,6 +50,12 @@ class App extends Component {
     }
   }
 
+  async handleRemove(personId) {
+    const { getPersonList, removePerson } = this.props;
+    await removePerson(personId);
+    await getPersonList();
+  }
+
   async handleSubmit(event) {
     const { getPersonList, addNewPerson } = this.props;
     event.preventDefault();
@@ -104,12 +110,17 @@ class App extends Component {
           {Boolean(personList.length) ? (
             personList.map(person => (
               <div key={person.id}>
-                <ListItem button onClick={() => this.handleClick(person.contacts)}>
+                <ListItem button>
                   <ListItemIcon>
                     <PersonIcon />
                   </ListItemIcon>
                   <ListItemText inset primary={person.name} />
-                  {Boolean(person.contacts.length) ? <ExpandMore /> : 'Sem contatos'}
+                  {Boolean(person.contacts.length) ? (
+                    <ExpandMore onClick={() => this.handleClick(person.contacts)} />
+                  ) : (
+                    'Sem contatos'
+                  )}
+                  <Button onClick={() => this.handleRemove(person.id)}>Excluir</Button>
                 </ListItem>
                 {Boolean(person.contacts.length) && (
                   <Collapse in={this.state.open} timeout="auto" unmountOnExit>
