@@ -45,6 +45,7 @@ class PersonForm extends Component {
 
     return (
       <form className={classes.container} noValidate autoComplete="off">
+        <h3>Nome e apenas um contato é obrigatório.</h3>
         <TextField
           required
           id="name"
