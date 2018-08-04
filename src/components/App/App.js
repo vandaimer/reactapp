@@ -24,7 +24,8 @@ class App extends Component {
 const styles = theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 500,
+    margin: '16px',
     backgroundColor: theme.palette.background.paper,
   },
 });
