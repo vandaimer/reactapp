@@ -30,9 +30,8 @@ const getPersonList = async state => {
 };
 
 const savePerson = async state => {
-  const uri = baseURL;
   const {
-    person: { name, ...rest },
+    person: { name, id, ...rest },
   } = state;
   const contacts = [];
 
@@ -43,7 +42,14 @@ const savePerson = async state => {
 
   const payload = { name, contacts };
 
-  await axios.post(uri, payload);
+  const uri = id ? `${baseURL}/${id}` : baseURL;
+
+  if (id) {
+    await axios.put(uri, payload);
+  } else {
+    await axios.post(uri, payload);
+  }
+
   return { person: { ...emptyPerson } };
 };
 
