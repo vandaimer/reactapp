@@ -57,11 +57,21 @@ const removePerson = async personId => {
   await axios.delete(uri);
 };
 
+const editPerson = async (state, payload) => {
+  const { name, id, ...rest } = payload;
+  const person = { id, name };
+  const { contacts } = rest;
+
+  contacts.forEach(({ service, contact }) => (person[service] = contact));
+  return { person: { ...emptyPerson, ...person } };
+};
+
 const actions = store => ({
   getPersonList: state => getPersonList(state),
   savePerson: state => savePerson(state),
   removePerson: (state, personId) => removePerson(personId),
   populatePerson: (state, payload) => populatePerson(state, payload),
+  editPerson: (state, payload) => editPerson(state, payload),
 });
 
 const props = ['personList', 'person'];
