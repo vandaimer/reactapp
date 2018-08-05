@@ -17,6 +17,7 @@ import { props, actions } from '../../reducer';
 class PersonList extends Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    editPerson: PropTypes.func.isRequired,
     personList: PropTypes.array.isRequired,
   };
 
@@ -39,6 +40,11 @@ class PersonList extends Component {
     await getPersonList();
   }
 
+  handleEdit(person) {
+    const { editPerson } = this.props;
+    editPerson(person);
+  }
+
   render() {
     const { personList, classes } = this.props;
 
@@ -59,6 +65,7 @@ class PersonList extends Component {
                   'Sem contatos'
                 )}
                 <Button onClick={() => this.handleRemove(person.id)}>Excluir</Button>
+                <Button onClick={() => this.handleEdit(person)}>Editar</Button>
               </ListItem>
               {Boolean(person.contacts.length) && (
                 <Collapse in={this.state.open} timeout="auto" unmountOnExit>
