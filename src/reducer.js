@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3000/api/person';
+const apiURL = 'http://159.65.99.15:3000';
+const baseURL = `${apiURL}/api/person`;
 
 const initialState = {
   personList: [],
