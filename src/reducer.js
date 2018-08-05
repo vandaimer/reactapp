@@ -29,7 +29,7 @@ const getPersonList = async state => {
   }
 };
 
-const addNewPerson = async state => {
+const savePerson = async state => {
   const uri = baseURL;
   const {
     person: { name, ...rest },
@@ -59,7 +59,7 @@ const removePerson = async personId => {
 
 const actions = store => ({
   getPersonList: state => getPersonList(state),
-  addNewPerson: state => addNewPerson(state),
+  savePerson: state => savePerson(state),
   removePerson: (state, personId) => removePerson(personId),
   populatePerson: (state, payload) => populatePerson(state, payload),
 });
