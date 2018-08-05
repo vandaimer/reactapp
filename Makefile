@@ -6,6 +6,7 @@ Y=yarn
 
 all:
 	$(Y)
+	$(Y) start
 
 prod:
 	rm -f build
