@@ -9,7 +9,7 @@ all:
 	$(Y) start
 
 prod:
-	rm -f build
+	rm -Rf build
 	$(MAKE) build
 	$(MAKE) run
 
