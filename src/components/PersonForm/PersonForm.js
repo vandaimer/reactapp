@@ -17,12 +17,13 @@ class PersonForm extends Component {
     classes: PropTypes.object.isRequired,
     person: PropTypes.object.isRequired,
     populatePerson: PropTypes.func.isRequired,
+    savePerson: PropTypes.func.isRequired,
   };
 
   async handleSubmit(event) {
-    const { getPersonList, addNewPerson } = this.props;
+    const { getPersonList, savePerson } = this.props;
     event.preventDefault();
-    await addNewPerson();
+    await savePerson();
     await getPersonList();
   }
 
