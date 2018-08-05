@@ -15,5 +15,7 @@
 - Rodar o comando ```yarn``` para instalar as depêndencias
 - Rodar o comando ```yarn start``` para iniciar o projeto
 
+Obs: Por default a aplicação está configurada para usar a API de produção.
+
 # Como executar em ambiente de produção
 - Rodar o comando ```make prod``` e irá iniciar o docker com a aplicação
