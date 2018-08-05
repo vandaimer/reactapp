@@ -3,8 +3,16 @@ import axios from 'axios';
 const apiURL = 'http://159.65.99.15:3000';
 const baseURL = `${apiURL}/api/person`;
 
+const emptyPerson = {
+  name: '',
+  facebook: '',
+  twitter: '',
+  phone: '',
+};
+
 const initialState = {
   personList: [],
+  person: { ...emptyPerson },
 };
 
 const getPersonList = async state => {
@@ -21,9 +29,11 @@ const getPersonList = async state => {
   }
 };
 
-const addNewPerson = async (state, dirtyPayload) => {
+const addNewPerson = async state => {
   const uri = baseURL;
-  const { name, ...rest } = dirtyPayload;
+  const {
+    person: { name, ...rest },
+  } = state;
   const contacts = [];
 
   for (let service in rest) {
@@ -34,6 +44,12 @@ const addNewPerson = async (state, dirtyPayload) => {
   const payload = { name, contacts };
 
   await axios.post(uri, payload);
+  return { person: { ...emptyPerson } };
+};
+
+const populatePerson = (state, payload) => {
+  const { person } = state;
+  return { person: { ...person, ...payload } };
 };
 
 const removePerson = async personId => {
@@ -43,10 +59,11 @@ const removePerson = async personId => {
 
 const actions = store => ({
   getPersonList: state => getPersonList(state),
-  addNewPerson: (state, dirtyPayload) => addNewPerson(state, dirtyPayload),
+  addNewPerson: state => addNewPerson(state),
   removePerson: (state, personId) => removePerson(personId),
+  populatePerson: (state, payload) => populatePerson(state, payload),
 });
 
-const props = ['personList'];
+const props = ['personList', 'person'];
 
 export { initialState, props, actions };

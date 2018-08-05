@@ -15,33 +15,24 @@ class PersonForm extends Component {
 
   static propTypes = {
     classes: PropTypes.object.isRequired,
+    person: PropTypes.object.isRequired,
+    populatePerson: PropTypes.func.isRequired,
   };
-
-  initialState = {
-    name: '',
-    facebook: '',
-    twitter: '',
-    phone: '',
-  };
-
-  state = { ...this.initialState };
 
   async handleSubmit(event) {
     const { getPersonList, addNewPerson } = this.props;
     event.preventDefault();
-    await addNewPerson(this.state);
+    await addNewPerson();
     await getPersonList();
-    this.setState({ ...this.initialState });
   }
 
   handleChange = name => event => {
-    this.setState({
-      [name]: event.target.value,
-    });
+    const { populatePerson } = this.props;
+    populatePerson({ [name]: event.target.value });
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, person: { name, facebook, twitter, phone } = {} } = this.props;
 
     return (
       <form className={classes.container} noValidate autoComplete="off">
@@ -51,7 +42,7 @@ class PersonForm extends Component {
           id="name"
           label="Nome"
           className={classes.textField}
-          value={this.state.name}
+          value={name}
           onChange={this.handleChange('name')}
           margin="normal"
         />
@@ -59,7 +50,7 @@ class PersonForm extends Component {
           id="facebook"
           label="Facebook"
           className={classes.textField}
-          value={this.state.facebook}
+          value={facebook}
           onChange={this.handleChange('facebook')}
           margin="normal"
         />
@@ -67,7 +58,7 @@ class PersonForm extends Component {
           id="twitter"
           label="Twitter"
           className={classes.textField}
-          value={this.state.twitter}
+          value={twitter}
           onChange={this.handleChange('twitter')}
           margin="normal"
         />
@@ -75,7 +66,7 @@ class PersonForm extends Component {
           id="phone"
           label="Phone"
           className={classes.textField}
-          value={this.state.phone}
+          value={phone}
           onChange={this.handleChange('phone')}
           margin="normal"
         />
